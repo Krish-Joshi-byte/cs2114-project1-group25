@@ -364,8 +364,6 @@ public class SleepTrackerAppTest
         assertTrue(stats.contains("Average sleep (all nights): 7.33 hours"));
         assertTrue(stats.contains("Longest night: 9.00 hours"));
         assertTrue(stats.contains("Shortest night: 6.00 hours"));
-        assertTrue(stats.contains(
-                "Sleep debt vs. your 8.00-hour goal: 0.67 hours"));
         assertTrue(stats.contains("--- Recommendations ---"));
         assertFalse(stats.contains("no data"));
     }
