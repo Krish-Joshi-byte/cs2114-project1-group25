@@ -12,8 +12,7 @@ public class RecommendationEngine {
     public List<String> generateRecommendations(SleepStatsCalculator stats) {
         List<String> recommendations = new ArrayList<>();
 
-        // Temporary placeholder until SleepStatsCalculator is available.
-        double averageSleep = stats.getAverageSleep();
+        double averageSleep = stats.weekdayAverage();
 
         if (averageSleep < 6.0) {
             recommendations.add(
@@ -43,6 +42,24 @@ public class RecommendationEngine {
             recommendations.add(
                 "Consistently sleeping for unusually long periods may sometimes " +
                 "be associated with daytime tiredness or other health concerns."
+            );
+        }
+
+        double weekendSleep = stats.weekendAverage();
+        
+        if (weekendSleep > 0.0 && weekendSleep < 6.0) {
+            recommendations.add(
+                "You are getting less than 6 hours of sleep on weekends."
+            );
+        }
+        else if (weekendSleep > 8.0) {
+            recommendations.add(
+                "You are sleeping more than 8 hours on weekends."
+            );
+        }
+        else if (weekendSleep > 0.0) {
+            recommendations.add(
+                "Your weekend sleep average is within the target range."
             );
         }
 

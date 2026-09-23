@@ -3,11 +3,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
-import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -32,8 +29,7 @@ public class SleepTrackerApp {
 
     /** Accepts "2026-09-21 22:30" or "2026-09-22 6:15". */
     private static final DateTimeFormatter DATE_TIME_FORMAT =
-            DateTimeFormatter.ofPattern("uuuu-MM-dd H:mm")
-                    .withResolverStyle(ResolverStyle.STRICT);
+            DateTimeFormatter.ofPattern("uuuu-MM-dd H:mm");
 
     private static final String DATE_TIME_EXAMPLE = "2026-09-21 22:30";
 
@@ -218,8 +214,9 @@ public class SleepTrackerApp {
                 "#", "Date", "Day", "Hours", "Quality", "Wake-ups"));
         int number = 1;
         for (SleepEntry entry : entries) {
-            String day = entry.getDate().getDayOfWeek()
-                    .getDisplayName(TextStyle.SHORT, Locale.US);
+            String day = entry.getDate().getDayOfWeek().toString().substring(0, 3);
+            day = day.substring(0, 1)
+                + day.substring(1).toLowerCase(Locale.US);
             System.out.println(String.format(
                     "%3d  %-10s  %-3s  %6s  %5d/%d  %8d%s",
                     number,
@@ -292,19 +289,14 @@ public class SleepTrackerApp {
             }
         }
         int weekdayNights = entries.size() - weekendNights;
-        Map<String, Double> split = stats.weekdayVsWeekendAverage();
-        if (split != null) {
-            for (Map.Entry<String, Double> average : split.entrySet()) {
-                String label = String.valueOf(average.getKey());
-                String lower = label.toLowerCase(Locale.US);
-                boolean noNights =
-                        (lower.contains("weekend") && weekendNights == 0)
-                                || (lower.contains("weekday") && weekdayNights == 0);
-                System.out.println(label + " average: " + (noNights
-                        ? "no data"
-                        : describeHours(average.getValue())));
-            }
-        }
+        System.out.println("weekday average: "
+            + (weekdayNights == 0
+                ? "no data"
+                : describeHours(stats.weekdayAverage())));
+        System.out.println("weekend average: "
+            + (weekendNights == 0
+                ? "no data"
+                : describeHours(stats.weekendAverage())));
 
         System.out.println();
         System.out.println("--- Recommendations ---");
