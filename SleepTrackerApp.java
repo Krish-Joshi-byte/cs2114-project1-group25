@@ -48,6 +48,7 @@ public class SleepTrackerApp {
     private static final int MENU_STATS = 3;
     private static final int MENU_CHANGE_GOAL = 4;
     private static final int MENU_QUIT = 5;
+    private static final int MENU_CHANGE_NAME = 6;
 
     private User currentUser;
     private SleepStatsCalculator stats;
@@ -121,10 +122,10 @@ public class SleepTrackerApp {
             while (running) {
                 printMenu();
                 int choice = promptForInt(
-                        "Choose an option (" + MENU_LOG_ENTRY + "-" + MENU_QUIT
-                                + "): ",
+                    "Choose an option (" + MENU_LOG_ENTRY + "-"
+                        + MENU_CHANGE_NAME + "): ",
                         MENU_LOG_ENTRY,
-                        MENU_QUIT);
+                    MENU_CHANGE_NAME);
                 switch (choice) {
                     case MENU_LOG_ENTRY:
                         promptForEntry();
@@ -137,6 +138,9 @@ public class SleepTrackerApp {
                         break;
                     case MENU_CHANGE_GOAL:
                         promptForGoalChange();
+                        break;
+                    case MENU_CHANGE_NAME:
+                        promptForNameChange();
                         break;
                     default:
                         running = false;
@@ -411,6 +415,28 @@ public class SleepTrackerApp {
         System.out.println(MENU_CHANGE_GOAL + ") Change sleep goal (currently "
                 + formatHours(currentUser.getGoalHours()) + " hours)");
         System.out.println(MENU_QUIT + ") Quit");
+        System.out.println(MENU_CHANGE_NAME + ") Change user name (currently "
+                + currentUser.getName() + ")");
+    }
+
+    /** Asks for a non-blank name and updates the current user. */
+    private void promptForNameChange() {
+        try {
+            while (true) {
+                System.out.print("New user name: ");
+                String name = readLine().trim();
+                if (!name.isEmpty()) {
+                    currentUser.setName(name);
+                    System.out.println("Your name is now " + name + ".");
+                    return;
+                }
+                System.out.println("Please enter a name.");
+            }
+        }
+        catch (InputClosedException e) {
+            System.out.println();
+            System.out.println("Input ended - your name was not changed.");
+        }
     }
 
     /**

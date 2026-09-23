@@ -48,6 +48,7 @@ the main menu:
 3. View statistics and recommendations
 4. Change the sleep goal
 5. Quit
+6. Change the user name
 
 Enter bedtime and wake time in `yyyy-MM-dd HH:mm` format, for example
 `2026-09-21 22:30`. A wake time must be later than the bedtime. Sleep quality

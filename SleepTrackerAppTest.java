@@ -132,7 +132,7 @@ public class SleepTrackerAppTest
      */
     public void testRunInvalidMenuChoice() {
         app(lines("9", "abc", "0", "5")).run();
-        assertTrue(output().contains("Please enter a number from 1 to 5."));
+        assertTrue(output().contains("Please enter a number from 1 to 6."));
         assertTrue(output().contains("A whole number is needed."));
         assertTrue(output().contains("Goodbye - sleep well!"));
     }
@@ -167,6 +167,15 @@ public class SleepTrackerAppTest
         assertEquals(8.0, user.getGoalHours(), DELTA);
         assertTrue(output().contains("your goal was not changed"));
         assertTrue(output().contains("No more input."));
+    }
+
+    /** Tests changing the user's name without replacing the journal. */
+    public void testRunChangeName() {
+        app(lines("6", "", "Avery", "5")).run();
+        assertEquals("Avery", user.getName());
+        assertEquals(0, user.getJournal().size());
+        assertTrue(output().contains("Please enter a name."));
+        assertTrue(output().contains("Your name is now Avery."));
     }
 
     /**

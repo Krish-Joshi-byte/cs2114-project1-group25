@@ -12,7 +12,7 @@
  */
 public class User {
 
-    private final String name;
+    private String name;
     private double goalHours;
     private final SleepJournal journal;
 
@@ -24,6 +24,11 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    /** Updates the user's display name. */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /** 
